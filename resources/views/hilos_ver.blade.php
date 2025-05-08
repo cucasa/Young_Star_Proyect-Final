@@ -4,7 +4,6 @@
 <div class="container py-4">
     <h2 class="text-center mb-4">💬 Hilos en {{ $forum->name }}</h2>
 
-    <!-- Mostrar los hilos existentes -->
     <div id="hilos-lista">
         @forelse($forum->threads as $thread)
             <div class="card mb-3 shadow-sm border-0">
@@ -12,9 +11,39 @@
                     <h4 class="text-primary">{{ $thread->titulo }}</h4>
                     <p class="text-muted">{{ $thread->body }}</p>
                     <small class="text-secondary">
-                        📝 Creado por: {{ $thread->user->name }} | 📅 {{ $thread->created_at->format('d M Y') }}
+                        📝 Creado por: {{ $thread->user->name }} | 📅 {{ $thread->created_at ? $thread->created_at->format('d M Y') : 'Fecha no disponible' }}
                     </small>
-                    <a href="#" class="btn btn-sm btn-outline-primary mt-2">Ver Hilo</a>
+                    <button class="btn btn-sm btn-success mt-2" onclick="mostrarFormulario({{ $thread->id }})">Crear Post</button>
+                </div>
+
+                <!-- Formulario para escribir un post -->
+                <div id="formularioPost_{{ $thread->id }}" class="mt-4 p-4 border rounded bg-light" style="display: none;">
+                    <h4>✍️ Responder al Hilo</h4>
+                    <form action="{{ route('guardar_post') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="thread_id" value="{{ $thread->id }}">
+                        <div class="mb-3">
+                            <label for="body_{{ $thread->id }}" class="form-label">Tu Respuesta</label>
+                            <textarea class="form-control shadow-sm" id="body_{{ $thread->id }}" name="body" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">💬 Publicar</button>
+                    </form>
+                </div>
+
+                <!-- Contenedor de Posts -->
+                <div id="posts-lista_{{ $thread->id }}" class="mt-4">
+                    @forelse($thread->posts as $post)
+                        <div class="card mb-3 shadow-sm border-0">
+                            <div class="card-body">
+                                <p class="text-muted">{{ $post->body }}</p>
+                                <small class="text-secondary">
+                                    ✍️ Por: {{ $post->user->name }} | 📅 {{ $post->created_at ? $post->created_at->format('d M Y') : 'Fecha no disponible' }}
+                                </small>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="alert alert-warning text-center">⚠️ No hay respuestas en este hilo aún.</div>
+                    @endforelse
                 </div>
             </div>
         @empty
@@ -40,4 +69,10 @@
         </form>
     </div>
 </div>
+
+<script>
+    function mostrarFormulario(threadId) {
+        document.getElementById("formularioPost_" + threadId).style.display = "block";
+    }
+</script>
 @endsection

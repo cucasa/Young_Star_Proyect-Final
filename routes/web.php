@@ -48,12 +48,12 @@ Route::middleware('auth')->group(function () {
 
 
 
-// 📌 Hilos y Post
+// 📌 Hilos
 Route::get('foros/{forum_id}', [ThreadController::class, 'mostrarHilos'])->name('ver_hilos');
 Route::post('hilos/crear', [ThreadController::class, 'guardarHilo'])->name('guardar_hilo');
 
 
 
 // 📌 Post
-
+Route::post('/posts/guardar', [PostController::class, 'guardarPost'])->name('guardar_post');
 
