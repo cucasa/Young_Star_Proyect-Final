@@ -10,7 +10,7 @@
         <div class="row">
             @foreach($foros as $foro)
                 <div class="col-md-6">
-                    <a href="#" class="text-decoration-none">
+                    <a href="{{ route('ver_hilos', $foro->id) }}" class="text-decoration-none">
                         <div class="card mb-3 shadow-sm">
                             <div class="card-body">
                                 <h4 class="card-title text-primary">{{ $foro->name }}</h4>

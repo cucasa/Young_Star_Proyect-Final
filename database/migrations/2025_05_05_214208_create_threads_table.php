@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
 
             $table->string('titulo');
-            $table->text('body');
+            $table->text('body')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Corrección
             $table->foreignId('forum_id')->constrained('forums')->onDelete('cascade'); // Corrección
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); // Corrección
 
             $table->timestamps();
         });

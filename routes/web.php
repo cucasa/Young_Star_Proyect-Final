@@ -5,8 +5,9 @@ use App\Http\Controllers\Body;
 use App\Http\Controllers\Entrada;
 use App\Http\Controllers\ForoController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\ThreadController;
+use App\Http\Controllers\PostController;
 use Faker\ORM\Propel2\EntityPopulator;
-
 
 
 
@@ -45,5 +46,14 @@ Route::middleware('auth')->group(function () {
 });
     Route::get('foros_ver', [ForoController::class, 'verForos'])->name('foros_ver'); // Ver los foros creados
 
+
+
+// 📌 Hilos y Post
+Route::get('foros/{forum_id}', [ThreadController::class, 'mostrarHilos'])->name('ver_hilos');
+Route::post('hilos/crear', [ThreadController::class, 'guardarHilo'])->name('guardar_hilo');
+
+
+
+// 📌 Post
 
 
