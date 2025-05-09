@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-
-            $table->string('titulo');
+            $table->string('title');
             $table->text('body');
-            $table->foreignId('users_id')->constrained('users');
-            $table->foreignId('categories_id')->constrained('categories');
-
+            $table->string('image')->nullable();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // 🔹 Se mantiene user_id
             $table->timestamps();
         });
+
+
     }
 
     /**

@@ -6,18 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-    protected $fillable = ['title', 'body', 'user_id', 'category_id'];
+    protected $fillable = ['title', 'body', 'image', 'user_id']; // 🔹 Se agregó 'image' para almacenar la imagen
 
     // Un artículo pertenece a un usuario
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    // Un artículo pertenece a una categoría
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
     }
 
     // Un artículo puede tener muchos comentarios

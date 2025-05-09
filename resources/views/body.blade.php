@@ -25,7 +25,6 @@
           <div class="text-center mb-5">
               <h1 class="fw-bold">Bienvenido a Young Star</h1>
               <p class="lead">La plataforma donde puedes explorar, aprender y compartir tus ideas.</p>
-              <a href="#" class="btn btn-primary btn-lg">Explorar Foros</a>
           </div>
 
           <!-- Sección de características -->

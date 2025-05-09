@@ -16,6 +16,7 @@
 
     <div class="d-flex justify-content-center gap-3">
         <a href="{{ route('foroC') }}" class="btn btn-success btn-lg">📝 Crear un Foro</a>
+        <a href="{{ route('articulos_formulario') }}" class="btn btn-primary btn-lg">📝 Crear un Artículo</a> <!-- Nuevo botón -->
         <form action="{{ route('cerrar_sesion') }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-danger btn-lg">🔒 Cerrar sesión</button>

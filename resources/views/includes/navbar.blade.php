@@ -21,24 +21,32 @@
                     <a href="{{ route('foros_ver') }}" class="nav-link text-white fw-semibold">Foros</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link text-white fw-semibold">Artículos</a>
+                    <a href="{{ route('articulos_ver') }}" class="nav-link text-white fw-semibold"> Artículos</a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link text-white fw-semibold">Recursos</a>
+
+                <!-- Menú desplegable de Recursos -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white fw-semibold" href="#" id="recursosMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Recursos
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="recursosMenu">
+                        <li><a class="dropdown-item" href="#">Herramientas</a></li>
+                        <li><a class="dropdown-item" href="#">Material Educativo</a></li>
+                        <li><a class="dropdown-item" href="#">Tutoriales</a></li>
+                    </ul>
                 </li>
+
                 <li class="nav-item">
                     <a href="#" class="nav-link text-white fw-semibold">Noticias</a>
                 </li>
             </ul>
 
-
-        <!-- Botón de perfil (Solo visible si el usuario está autenticado) -->
-                 @if(auth()->check())
-        <div class="d-flex">
-               <a href="{{ route('perfil') }}" class="btn btn-light fw-semibold me-2">Perfil</a>
-         </div>
-              @endif
-
+            <!-- Botón de perfil (Solo visible si el usuario está autenticado) -->
+            @if(auth()->check())
+                <div class="d-flex">
+                    <a href="{{ route('perfil') }}" class="btn btn-light fw-semibold me-2">Perfil</a>
+                </div>
+            @endif
 
             <!-- Botón de sesión -->
             <div class="d-flex">
@@ -48,5 +56,3 @@
         </div>
     </div>
 </nav>
-
-

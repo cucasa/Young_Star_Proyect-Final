@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    protected $fillable = ['body', 'user_id', 'article_id'];
-
+    protected $fillable = ['comentario', 'user_id', 'article_id'];
+    
     // Un comentario pertenece a un usuario
     public function user()
     {

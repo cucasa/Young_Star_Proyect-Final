@@ -8,11 +8,7 @@ class Category extends Model
 {
     protected $fillable = ['name', 'description'];
 
-    // Una categoría puede tener muchos artículos
-    public function articles()
-    {
-        return $this->hasMany(Article::class);
-    }
+
 
     // Una categoría puede tener muchos hilos
     public function threads()

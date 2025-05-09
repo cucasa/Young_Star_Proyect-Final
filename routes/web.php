@@ -7,7 +7,11 @@ use App\Http\Controllers\ForoController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\RatingController;
 use Faker\ORM\Propel2\EntityPopulator;
+
 
 
 
@@ -36,9 +40,6 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
-
-
 // 📌 Foros
 Route::middleware('auth')->group(function () {
     Route::get('foroC', [ForoController::class, 'mostrarFormulario'])->name('foroC'); // Formulario de creación de foro
@@ -51,9 +52,28 @@ Route::middleware('auth')->group(function () {
 // 📌 Hilos
 Route::get('foros/{forum_id}', [ThreadController::class, 'mostrarHilos'])->name('ver_hilos');
 Route::post('hilos/crear', [ThreadController::class, 'guardarHilo'])->name('guardar_hilo');
-
-
-
 // 📌 Post
 Route::post('/posts/guardar', [PostController::class, 'guardarPost'])->name('guardar_post');
+
+
+
+
+// 📌 Articulos
+Route::get('/articulos', [ArticleController::class, 'ver'])->name('articulos_ver'); // 🔹 Ver artículos
+Route::get('/articulos/nuevo', [ArticleController::class, 'formulario'])->name('articulos_formulario'); // 🔹 Formulario de creación
+Route::post('/articulos/guardar', [ArticleController::class, 'guardar'])->name('articulos_guardar'); // 🔹 Guardar en la base de datos
+Route::get('/articulo/{id}', [ArticleController::class, 'detalle'])->name('articulo_detalle');
+Route::get('/articulos/nuevo', [ArticleController::class, 'formulario'])->name('articulos_formulario');
+
+
+
+
+
+
+// 📌 Comentarios y Valoración
+Route::post('/comentarios/guardar', [CommentController::class, 'guardar'])->name('comentarios_guardar');
+Route::post('/valoraciones/guardar', [RatingController::class, 'guardar'])->name('valoraciones_guardar');
+
+
+
 
