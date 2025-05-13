@@ -35,9 +35,16 @@ Route::post('login', [Entrada::class, 'store2'])->name('login.store'); // Maneja
 
 // 📌 Perfil de usuario
 Route::middleware('auth')->group(function () {
-    Route::get('perfil', [PerfilController::class, 'mostrarPerfil'])->name('perfil');
-    Route::post('cerrar_sesion', [PerfilController::class, 'cerrarSesion'])->name('cerrar_sesion');
+    Route::get('/perfil', [PerfilController::class, 'mostrarPerfil'])->name('perfil');
+    Route::post('/cerrar_sesion', [PerfilController::class, 'cerrarSesion'])->name('cerrar_sesion');
+    Route::patch('/perfil/actualizar-nombre', [PerfilController::class, 'actualizarNombre'])->name('perfil_actualizar_nombre');
+    Route::patch('/perfil/actualizar-email', [PerfilController::class, 'actualizarEmail'])->name('perfil_actualizar_email');
+    Route::patch('/perfil/actualizar-password', [PerfilController::class, 'actualizarPassword'])->name('perfil_actualizar_password');
+    Route::put('/perfil/actualizar-completo', [PerfilController::class, 'actualizarCompleto'])->name('perfil_actualizar_completo');
+    Route::delete('/perfil/eliminar', [PerfilController::class, 'eliminar'])->name('perfil_eliminar');
 });
+
+
 
 
 // 📌 Foros
@@ -73,7 +80,6 @@ Route::get('/articulos/nuevo', [ArticleController::class, 'formulario'])->name('
 // 📌 Comentarios y Valoración
 Route::post('/comentarios/guardar', [CommentController::class, 'guardar'])->name('comentarios_guardar');
 Route::post('/valoraciones/guardar', [RatingController::class, 'guardar'])->name('valoraciones_guardar');
-
 
 
 
