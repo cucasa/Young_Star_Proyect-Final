@@ -39,4 +39,21 @@ class CommentController extends Controller
 
         return redirect()->back()->with('success', 'Comentario eliminado correctamente.');
     }
+
+
+    // Editar un comentario
+    public function update(Request $request, $id)
+    {
+        $comentario = Comment::findOrFail($id);
+
+        // Verificar si el usuario tiene permisos para editar
+        if (Auth::id() !== $comentario->user_id) {
+            return redirect()->back()->with('error', 'No puedes editar este comentario.');
+        }
+
+        $comentario->comentario = $request->input('comentario');
+        $comentario->save();
+
+        return redirect()->back()->with('success', 'Comentario actualizado correctamente.');
+    }
 }

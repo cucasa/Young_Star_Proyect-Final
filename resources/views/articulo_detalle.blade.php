@@ -26,7 +26,7 @@
 
     <hr>
 
-    <!-- Sección de Valoración -->
+    <!-- Sección de Valoración con estrellas interactivas -->
     <div class="mt-4">
         <h3>⭐ Valora este artículo</h3>
 
@@ -34,20 +34,23 @@
             @csrf
             <input type="hidden" name="rateable_id" value="{{ $articulo->id }}">
             <input type="hidden" name="rateable_type" value="App\Models\Article">
-            <select name="rating" class="form-select w-25">
-                <option value="1">⭐ 1 estrella</option>
-                <option value="2">⭐⭐ 2 estrellas</option>
-                <option value="3">⭐⭐⭐ 3 estrellas</option>
-                <option value="4">⭐⭐⭐⭐ 4 estrellas</option>
-                <option value="5">⭐⭐⭐⭐⭐ 5 estrellas</option>
-            </select>
+            <input type="hidden" name="rating" id="rating-value">
+
+            <div id="star-rating">
+                <span class="star" data-value="1">&#9733;</span>
+                <span class="star" data-value="2">&#9733;</span>
+                <span class="star" data-value="3">&#9733;</span>
+                <span class="star" data-value="4">&#9733;</span>
+                <span class="star" data-value="5">&#9733;</span>
+            </div>
+
             <button type="submit" class="btn btn-success mt-2">Enviar Valoración</button>
         </form>
     </div>
 
     <hr>
 
-    <!-- Sección de Comentarios -->
+    <!-- Sección de Comentarios con edición interactiva -->
     <div class="mt-4">
         <h3>📝 Comentarios</h3>
         <form action="{{ route('comentarios_guardar') }}" method="POST">
@@ -63,10 +66,21 @@
             <div class="border p-3 mb-3 rounded shadow-sm bg-light position-relative">
                 <strong>{{ $comment->user->name }}</strong>
                 <span class="text-muted">({{ $comment->created_at->format('d M Y') }})</span>
-                <p class="fs-6">{{ $comment->comentario }}</p>
+                <p class="fs-6" id="comment-text-{{ $comment->id }}">{{ $comment->comentario }}</p>
 
                 @if(Auth::id() === $comment->user_id)
-                    <form action="{{ route('comentarios_eliminar', $comment->id) }}" method="POST" class="position-absolute top-0 end-0">
+                    <!-- Botón para abrir el formulario de edición -->
+                    <button class="btn btn-warning btn-sm" onclick="toggleEditForm({{ $comment->id }})">Editar</button>
+
+                    <form action="{{ route('comentarios_editar', $comment->id) }}" method="POST" id="edit-form-{{ $comment->id }}" style="display:none;">
+                        @csrf
+                        @method('PUT')
+                        <textarea name="comentario" class="form-control mt-2">{{ $comment->comentario }}</textarea>
+                        <button type="submit" class="btn btn-success btn-sm mt-2">Guardar cambios</button>
+                    </form>
+
+                    <!-- Botón para eliminar comentario -->
+                    <form action="{{ route('comentarios_eliminar', $comment->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
@@ -81,4 +95,41 @@
     <!-- Botón para volver a la lista de artículos -->
     <a href="{{ route('articulos_index') }}" class="btn btn-secondary">Volver a Artículos</a>
 </div>
+
+<!-- Estilos y Script -->
+<style>
+    #star-rating {
+        font-size: 30px;
+        cursor: pointer;
+        color: gray;
+    }
+    .star.selected {
+        color: gold;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let stars = document.querySelectorAll('.star');
+        let ratingValue = document.getElementById('rating-value');
+
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                let value = this.getAttribute('data-value');
+                ratingValue.value = value;
+
+                // Resaltar las estrellas seleccionadas
+                stars.forEach(s => s.classList.remove('selected'));
+                for (let i = 0; i < value; i++) {
+                    stars[i].classList.add('selected');
+                }
+            });
+        });
+    });
+
+    function toggleEditForm(commentId) {
+        let form = document.getElementById(`edit-form-${commentId}`);
+        form.style.display = form.style.display === "none" ? "block" : "none";
+    }
+</script>
 @endsection

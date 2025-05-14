@@ -17,6 +17,9 @@ class RatingController extends Controller
             'rating' => 'required|integer|min:1|max:5'
         ]);
 
+
+
+
         // Verificar si el usuario ya valoró este contenido
         $exists = Rating::where([
             ['user_id', Auth::id()],
@@ -37,5 +40,17 @@ class RatingController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Valoración guardada correctamente.');
+    }
+
+
+
+    // Editar una valoración existente
+    public function update(Request $request, $id)
+    {
+        $valoracion = Rating::where('user_id', Auth::id())->where('id', $id)->firstOrFail();
+
+        $valoracion->update(['rating' => $request->rating]);
+
+        return redirect()->back()->with('success', 'Valoración actualizada correctamente.');
     }
 }

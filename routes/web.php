@@ -46,7 +46,6 @@ Route::middleware('auth')->group(function () {
 
 
 
-
 // 📌 Foros
 Route::middleware('auth')->group(function () {
     Route::get('foroC', [ForoController::class, 'mostrarFormulario'])->name('foroC'); // Formulario de creación de foro
@@ -59,6 +58,9 @@ Route::middleware('auth')->group(function () {
 // 📌 Hilos
 Route::get('foros/{forum_id}', [ThreadController::class, 'mostrarHilos'])->name('ver_hilos');
 Route::post('hilos/crear', [ThreadController::class, 'guardarHilo'])->name('guardar_hilo');
+
+
+
 // 📌 Post
 Route::post('/posts/guardar', [PostController::class, 'guardarPost'])->name('guardar_post');
 
@@ -67,17 +69,18 @@ Route::post('/posts/guardar', [PostController::class, 'guardarPost'])->name('gua
 // 📌 Ruta para el formulario de creación de artículos
 Route::get('/articulos/nuevo', [ArticleController::class, 'create'])->name('articulos_formulario');
 Route::post('/articulos', [ArticleController::class, 'store'])->name('articulos_guardar');
-
-
 Route::get('/articulo/{id}', [ArticleController::class, 'show'])->name('articulo_detalle');
 Route::get('/articulos', [ArticleController::class, 'index'])->name('articulos_index');
 Route::delete('/articulo/{id}', [ArticleController::class, 'destroy'])->name('articulos_eliminar');
 
 
+
 // 📌 Rutas de Comentarios
 Route::post('/comentarios', [CommentController::class, 'store'])->name('comentarios_guardar');
 Route::delete('/comentario/{id}', [CommentController::class, 'destroy'])->name('comentarios_eliminar');
+Route::put('/comentario/{id}', [CommentController::class, 'update'])->name('comentarios_editar');
 
 
 // 📌 Rutas de Valoraciones
 Route::post('/valoracion', [RatingController::class, 'store'])->name('valoraciones_guardar');
+Route::put('/valoracion/{id}', [RatingController::class, 'update'])->name('valoraciones_editar');
