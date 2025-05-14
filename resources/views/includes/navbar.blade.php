@@ -21,7 +21,7 @@
                     <a href="{{ route('foros_ver') }}" class="nav-link text-white fw-semibold">Foros</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('articulos_ver') }}" class="nav-link text-white fw-semibold"> Artículos</a>
+                    <a href="{{ route('articulos_index') }}" class="nav-link text-white fw-semibold"> Artículos</a>
                 </li>
 
                 <!-- Menú desplegable de Recursos -->

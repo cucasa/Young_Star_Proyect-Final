@@ -64,22 +64,20 @@ Route::post('/posts/guardar', [PostController::class, 'guardarPost'])->name('gua
 
 
 
-
-// 📌 Articulos
-Route::get('/articulos', [ArticleController::class, 'ver'])->name('articulos_ver'); // 🔹 Ver artículos
-Route::get('/articulos/nuevo', [ArticleController::class, 'formulario'])->name('articulos_formulario'); // 🔹 Formulario de creación
-Route::post('/articulos/guardar', [ArticleController::class, 'guardar'])->name('articulos_guardar'); // 🔹 Guardar en la base de datos
-Route::get('/articulo/{id}', [ArticleController::class, 'detalle'])->name('articulo_detalle');
-Route::get('/articulos/nuevo', [ArticleController::class, 'formulario'])->name('articulos_formulario');
+// 📌 Ruta para el formulario de creación de artículos
+Route::get('/articulos/nuevo', [ArticleController::class, 'create'])->name('articulos_formulario');
+Route::post('/articulos', [ArticleController::class, 'store'])->name('articulos_guardar');
 
 
+Route::get('/articulo/{id}', [ArticleController::class, 'show'])->name('articulo_detalle');
+Route::get('/articulos', [ArticleController::class, 'index'])->name('articulos_index');
+Route::delete('/articulo/{id}', [ArticleController::class, 'destroy'])->name('articulos_eliminar');
 
 
+// 📌 Rutas de Comentarios
+Route::post('/comentarios', [CommentController::class, 'store'])->name('comentarios_guardar');
+Route::delete('/comentario/{id}', [CommentController::class, 'destroy'])->name('comentarios_eliminar');
 
 
-// 📌 Comentarios y Valoración
-Route::post('/comentarios/guardar', [CommentController::class, 'guardar'])->name('comentarios_guardar');
-Route::post('/valoraciones/guardar', [RatingController::class, 'guardar'])->name('valoraciones_guardar');
-
-
-
+// 📌 Rutas de Valoraciones
+Route::post('/valoracion', [RatingController::class, 'store'])->name('valoraciones_guardar');

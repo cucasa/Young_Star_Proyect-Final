@@ -15,7 +15,10 @@
                 @endif
 
                 <p class="text-muted">{{ Str::limit($articulo->body, 250) }}</p>
-                <a href="{{ route('articulo_detalle', $articulo->id) }}" class="btn btn-primary">Leer más...</a>
+
+<a href="{{ route('articulo_detalle', $articulo->id) }}" class="btn btn-primary">Leer más...</a>
+
+
             </div>
         @empty
             <div class="alert alert-warning text-center">⚠️ No hay artículos disponibles.</div>

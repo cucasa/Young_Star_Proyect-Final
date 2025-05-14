@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-    protected $fillable = ['title', 'body', 'image', 'user_id']; // 🔹 Se agregó 'image' para almacenar la imagen
+    protected $fillable = ['title', 'body', 'image', 'user_id', 'average_rating'];
 
     // Un artículo pertenece a un usuario
     public function user()
@@ -20,15 +20,22 @@ class Article extends Model
         return $this->hasMany(Comment::class);
     }
 
-    // Un artículo puede tener muchas valoraciones
+    // Un artículo puede tener valoraciones polimórficas
     public function ratings()
     {
-        return $this->hasMany(Rating::class);
+        return $this->morphMany(Rating::class, 'rateable');
     }
 
     // Un artículo puede ser reportado (relación polimórfica)
     public function reports()
     {
         return $this->morphMany(Report::class, 'reported');
+    }
+
+    // Método para calcular el promedio de valoraciones
+    public function updateAverageRating()
+    {
+        $this->average_rating = $this->ratings()->avg('rating') ?? 0;
+        $this->save();
     }
 }

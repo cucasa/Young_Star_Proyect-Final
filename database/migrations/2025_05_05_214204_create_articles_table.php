@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('articles', function (Blueprint $table) {
@@ -16,16 +13,12 @@ return new class extends Migration
             $table->string('title');
             $table->text('body');
             $table->string('image')->nullable();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // 🔹 Se mantiene user_id
+            $table->float('average_rating')->default(0);
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
-
-
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('articles');

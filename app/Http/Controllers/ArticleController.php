@@ -8,66 +8,62 @@ use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
-    public function ver()
+    // Mostrar todos los artículos
+    public function index()
     {
-        $articulos = Article::latest()->get();
-        return view('articulos', compact('articulos'));
+        $articulos = Article::latest()->paginate(10);
+        return view('articulos_index', compact('articulos'));
     }
 
+    // Mostrar formulario de creación
+    public function create()
+    {
+        return view('articulos_formulario');
+    }
 
+    // Guardar un nuevo artículo
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string',
+            'image' => 'nullable|image|max:2048'
+        ]);
 
+        $article = new Article();
+        $article->title = $validated['title'];
+        $article->body = $validated['body'];
+        $article->user_id = Auth::id();
 
+        if ($request->hasFile('image')) {
+            $article->image = $request->file('image')->store('articles', 'public');
+        }
 
+        $article->save();
 
+        return redirect()->route('articulos_index')->with('success', 'Artículo creado correctamente.');
+    }
 
-    public function formulario()
-{
-    return view('crear_articulo'); // 📌 Aquí cargamos la vista del formulario
-}
-
-
-
-
-
-
-
-
-
-
-    public function detalle($id)
+    // Mostrar un artículo específico
+    public function show($id)
 {
     $articulo = Article::findOrFail($id);
     return view('articulo_detalle', compact('articulo'));
 }
 
-
-
-
-
-
-
-
-    public function guardar(Request $request)
+    // Eliminar un artículo
+        // Eliminar un artículo
+    public function destroy($id)
     {
-        if (!Auth::check()) {
-            return redirect()->route('entrada')->with('error', 'Debes iniciar sesión para crear un artículo.');
+        $articulo = Article::findOrFail($id);
+
+        // Verificar si el usuario tiene permisos para eliminar
+        if (Auth::id() !== $articulo->user_id) {
+            return redirect()->route('articulos_index')->with('error', 'No puedes eliminar este artículo.');
         }
 
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'body' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        $articulo->delete();
 
-        $imagePath = $request->hasFile('image') ? $request->file('image')->store('articulos', 'public') : null;
-
-        Article::create([
-            'title' => $request->title,
-            'body' => $request->body,
-            'image' => $imagePath,
-            'user_id' => Auth::id(),
-        ]);
-
-        return redirect()->route('articulos_ver')->with('success', 'Artículo creado correctamente.');
+        return redirect()->route('articulos_index')->with('success', 'Artículo eliminado correctamente.');
     }
 }

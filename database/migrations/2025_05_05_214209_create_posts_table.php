@@ -6,24 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->text('body');
-            $table->foreignId('thread_id')->constrained('threads')->onDelete('cascade'); // ✅ Debe estar presente
+            $table->float('average_rating')->default(0);
+            $table->foreignId('thread_id')->constrained('threads')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
-
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('posts');

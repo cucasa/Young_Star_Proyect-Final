@@ -9,7 +9,7 @@ class Forum extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'category_id', 'user_id'];
+    protected $fillable = ['name', 'description', 'category_id', 'user_id', 'average_rating'];
 
     // Un foro pertenece a una categoría
     public function category()
@@ -23,10 +23,20 @@ class Forum extends Model
         return $this->hasMany(Thread::class);
     }
 
-    // Relación: Un foro pertenece a un usuario
+    // Un foro pertenece a un usuario
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-}
 
+    public function ratings()
+    {
+        return $this->morphMany(Rating::class, 'rateable');
+    }
+
+    public function updateAverageRating()
+    {
+        $this->average_rating = $this->ratings()->avg('rating') ?? 0;
+        $this->save();
+    }
+}

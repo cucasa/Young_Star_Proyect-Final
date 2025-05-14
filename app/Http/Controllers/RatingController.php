@@ -8,24 +8,34 @@ use Illuminate\Support\Facades\Auth;
 
 class RatingController extends Controller
 {
-    public function guardar(Request $request)
+    // Guardar una nueva valoración
+    public function store(Request $request)
     {
-        if (!Auth::check()) {
-            return redirect()->back()->with('error', 'Debes iniciar sesión para valorar.');
-        }
-
-        $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
-            'article_id' => 'required|exists:articles,id',
+        $validated = $request->validate([
+            'rateable_id' => 'required|integer',
+            'rateable_type' => 'required|string|in:App\\Models\\Article,App\\Models\\Forum,App\\Models\\Thread,App\\Models\\Post',
+            'rating' => 'required|integer|min:1|max:5'
         ]);
 
+        // Verificar si el usuario ya valoró este contenido
+        $exists = Rating::where([
+            ['user_id', Auth::id()],
+            ['rateable_id', $validated['rateable_id']],
+            ['rateable_type', $validated['rateable_type']]
+        ])->exists();
+
+        if ($exists) {
+            return redirect()->back()->with('error', 'Ya has valorado este contenido.');
+        }
+
+        // Guardar la valoración
         Rating::create([
-            'rating' => $request->rating,
             'user_id' => Auth::id(),
-            'article_id' => $request->article_id,
+            'rateable_id' => $validated['rateable_id'],
+            'rateable_type' => $validated['rateable_type'],
+            'rating' => $validated['rating']
         ]);
 
         return redirect()->back()->with('success', 'Valoración guardada correctamente.');
     }
 }
-

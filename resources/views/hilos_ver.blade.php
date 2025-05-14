@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container py-4">
-    <h2 class="text-center mb-4">💬 Hilos en {{ $forum->name }}</h2>
+    <h2 class="text-center mb-4">💬 Hilo: {{ $forum->name }}</h2>
 
     <div id="hilos-lista">
         @forelse($forum->threads as $thread)
@@ -42,12 +42,12 @@
                             </div>
                         </div>
                     @empty
-                        <div class="alert alert-warning text-center">⚠️ No hay respuestas en este hilo aún.</div>
+                        <div class="alert alert-warning text-center">No hay respuestas en este hilo aún.</div>
                     @endforelse
                 </div>
             </div>
         @empty
-            <div class="alert alert-warning text-center">⚠️ Aún no hay hilos en este foro.</div>
+            <div class="alert alert-warning text-center">Aún no hay hilos en este foro.</div>
         @endforelse
     </div>
 
