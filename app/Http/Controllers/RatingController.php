@@ -53,4 +53,22 @@ class RatingController extends Controller
 
         return redirect()->back()->with('success', 'Valoración actualizada correctamente.');
     }
+
+
+
+
+    public function storeThreadRating(Request $request, $id)
+{
+    $request->validate([
+        'rating' => 'required|integer|min:1|max:5',
+    ]);
+
+    Rating::updateOrCreate(
+        ['user_id' => Auth::id(), 'rateable_id' => $id, 'rateable_type' => 'App\Models\Thread'],
+        ['rating' => $request->rating]
+    );
+
+    return redirect()->back()->with('success', 'Hilo valorado correctamente.');
+}
+
 }

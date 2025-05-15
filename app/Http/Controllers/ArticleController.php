@@ -51,7 +51,6 @@ class ArticleController extends Controller
     return view('articulo_detalle', compact('articulo'));
 }
 
-    // Eliminar un artículo
         // Eliminar un artículo
     public function destroy($id)
     {

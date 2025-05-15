@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('foroC', [ForoController::class, 'mostrarFormulario'])->name('foroC'); // Formulario de creación de foro
     Route::post('foro1', [ForoController::class, 'guardarForo'])->name('foro1'); // Guardar foro en la base de datos
+    Route::delete('/foros/{id}', [ForoController::class, 'destroy'])->name('foros_eliminar');
 });
     Route::get('foros_ver', [ForoController::class, 'verForos'])->name('foros_ver'); // Ver los foros creados
 
@@ -59,6 +60,13 @@ Route::middleware('auth')->group(function () {
 Route::get('foros/{forum_id}', [ThreadController::class, 'mostrarHilos'])->name('ver_hilos');
 Route::post('hilos/crear', [ThreadController::class, 'guardarHilo'])->name('guardar_hilo');
 
+// Actualizar hilos
+Route::put('/hilos/{id}', [ThreadController::class, 'update'])->name('hilos_editar');
+
+// Eliminar hilos
+Route::delete('/hilos/{id}', [ThreadController::class, 'destroy'])->name('hilos_eliminar');
+
+// Valorar hilos
 
 
 // 📌 Post
@@ -66,6 +74,7 @@ Route::post('/posts/guardar', [PostController::class, 'guardarPost'])->name('gua
 
 
 
+                    // 📌 Artículos
 // 📌 Ruta para el formulario de creación de artículos
 Route::get('/articulos/nuevo', [ArticleController::class, 'create'])->name('articulos_formulario');
 Route::post('/articulos', [ArticleController::class, 'store'])->name('articulos_guardar');
@@ -75,12 +84,13 @@ Route::delete('/articulo/{id}', [ArticleController::class, 'destroy'])->name('ar
 
 
 
-// 📌 Rutas de Comentarios
+// 📌 Comentarios
 Route::post('/comentarios', [CommentController::class, 'store'])->name('comentarios_guardar');
 Route::delete('/comentario/{id}', [CommentController::class, 'destroy'])->name('comentarios_eliminar');
 Route::put('/comentario/{id}', [CommentController::class, 'update'])->name('comentarios_editar');
 
 
-// 📌 Rutas de Valoraciones
+// 📌 Valoraciones
 Route::post('/valoracion', [RatingController::class, 'store'])->name('valoraciones_guardar');
 Route::put('/valoracion/{id}', [RatingController::class, 'update'])->name('valoraciones_editar');
+Route::post('/hilos/{id}/valorar', [RatingController::class, 'storeThreadRating'])->name('hilos_valorar');

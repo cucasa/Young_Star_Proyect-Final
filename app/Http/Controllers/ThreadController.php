@@ -32,5 +32,41 @@ class ThreadController extends Controller
 
         return redirect()->back()->with('success', 'Hilo creado correctamente.');
     }
+
+
+
+public function update(Request $request, $id)
+{
+    $thread = Thread::findOrFail($id);
+
+    if (Auth::id() !== $thread->user_id) {
+        return redirect()->back()->with('error', 'No puedes editar este hilo.');
+    }
+
+    $request->validate([
+        'titulo' => 'required|string|max:255',
+        'body' => 'required|string|max:2000',
+    ]);
+
+    $thread->update([
+        'titulo' => $request->titulo,
+        'body' => $request->body,
+    ]);
+
+    return redirect()->back()->with('success', 'Hilo actualizado correctamente.');
+}
+
+public function destroy($id)
+{
+    $thread = Thread::findOrFail($id);
+
+    if (Auth::id() !== $thread->user_id) {
+        return redirect()->back()->with('error', 'No puedes eliminar este hilo.');
+    }
+
+    $thread->delete();
+    return redirect()->route('ver_hilos', $thread->forum_id)->with('success', 'Hilo eliminado correctamente.');
+}
+
 }
 
