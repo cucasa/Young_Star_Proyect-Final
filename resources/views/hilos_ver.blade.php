@@ -8,44 +8,38 @@
         @forelse($forum->threads as $thread)
             <div class="card mb-3 shadow-sm border-0">
                 <div class="card-body">
+                    <!-- Información del Hilo -->
                     <h4 class="text-primary">{{ $thread->titulo }}</h4>
                     <p class="text-muted">{{ $thread->body }}</p>
                     <small class="text-secondary">
                         📝 Creado por: {{ $thread->user->name }} | 📅 {{ $thread->created_at->format('d M Y') }}
                     </small>
 
-
-
                     <!-- Sección de Valoración con estrellas interactivas -->
-<div class="mt-4">
-    <h3>⭐ Valora este hilo</h3>
+                    <div class="mt-4">
+                        <h3>⭐ Valora este hilo</h3>
+                        <form action="{{ route('valoraciones_guardar') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="rateable_id" value="{{ $thread->id }}">
+                            <input type="hidden" name="rateable_type" value="App\Models\Thread">
+                            <!-- IDs únicos para la valoración por hilo -->
+                            <input type="hidden" name="rating" id="rating-value-{{ $thread->id }}">
+                            <div id="star-rating-{{ $thread->id }}">
+                                <span class="star" data-value="1">&#9733;</span>
+                                <span class="star" data-value="2">&#9733;</span>
+                                <span class="star" data-value="3">&#9733;</span>
+                                <span class="star" data-value="4">&#9733;</span>
+                                <span class="star" data-value="5">&#9733;</span>
+                            </div>
+                            <button type="submit" class="btn btn-success mt-2">Enviar Valoración</button>
+                        </form>
+                    </div>
 
-    <form action="{{ route('valoraciones_guardar') }}" method="POST">
-        @csrf
-        <input type="hidden" name="rateable_id" value="{{ $thread->id }}">
-        <input type="hidden" name="rateable_type" value="App\Models\Thread">
-        <input type="hidden" name="rating" id="rating-value">
+                    <!-- Opciones para editar/eliminar el hilo (solo para el creador) -->
+                    @if(Auth::id() === $thread->user->id)
+                        <button class="btn btn-warning btn-sm mt-2" onclick="mostrarFormularioEditar({{ $thread->id }})">✏️ Editar</button>
 
-        <div id="star-rating">
-            <span class="star" data-value="1">&#9733;</span>
-            <span class="star" data-value="2">&#9733;</span>
-            <span class="star" data-value="3">&#9733;</span>
-            <span class="star" data-value="4">&#9733;</span>
-            <span class="star" data-value="5">&#9733;</span>
-        </div>
-
-        <button type="submit" class="btn btn-success mt-2">Enviar Valoración</button>
-    </form>
-</div>
-
-
-
-
-
-                    @if(Auth::id() === $thread->user_id)
-                        <button class="btn btn-warning btn-sm mt-2" onclick="mostrarFormularioEditar({{ $thread->id }})">Editar</button>
-
-                        <form action="{{ route('hilos_editar', $thread->id) }}" method="POST" id="edit-form-{{ $thread->id }}" style="display:none;">
+                        <form action="{{ route('hilos_editar', $thread->id) }}" method="POST" id="edit-form-{{ $thread->id }}" style="display: none;">
                             @csrf
                             @method('PUT')
                             <input type="text" class="form-control mt-2" name="titulo" value="{{ $thread->titulo }}">
@@ -56,12 +50,12 @@
                         <form action="{{ route('hilos_eliminar', $thread->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm mt-2">Eliminar</button>
+                            <button type="submit" class="btn btn-danger btn-sm mt-2">❌ Eliminar</button>
                         </form>
                     @endif
 
+                    <!-- Botón para crear un post -->
                     <button class="btn btn-sm btn-success mt-2" onclick="mostrarFormulario({{ $thread->id }})">✍️ Crear Post</button>
-
                     <!-- Formulario para escribir un post -->
                     <div id="formularioPost_{{ $thread->id }}" class="mt-4 p-4 border rounded bg-light" style="display: none;">
                         <h4>✍️ Responder al Hilo</h4>
@@ -81,10 +75,31 @@
                         @foreach($thread->posts as $post)
                             <div class="card mb-3 shadow-sm border-0">
                                 <div class="card-body">
-                                    <p class="text-muted">{{ $post->body }}</p>
+                                    <p id="post-body-{{ $post->id }}" class="text-muted">{{ $post->body }}</p>
                                     <small class="text-secondary">
                                         ✍️ Por: {{ $post->user->name }} | 📅 {{ $post->created_at->format('d M Y') }}
                                     </small>
+
+                                    <!-- Opciones de edición y eliminación para el creador del post -->
+                                    @if(Auth::id() === $post->user->id)
+                                        <div class="mt-2">
+                                            <button class="btn btn-warning btn-sm" onclick="toggleEditPostForm({{ $post->id }})">✏️ Editar</button>
+                                            <form action="{{ route('posts_eliminar', $post->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">❌ Eliminar</button>
+                                            </form>
+                                        </div>
+                                        <!-- Formulario de edición del post (oculto por defecto) -->
+                                        <div id="edit-post-form-{{ $post->id }}" class="mt-2" style="display: none;">
+                                            <form action="{{ route('posts_editar', $post->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <textarea class="form-control" name="body" rows="3">{{ $post->body }}</textarea>
+                                                <button type="submit" class="btn btn-success btn-sm mt-2">Guardar cambios</button>
+                                            </form>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         @endforeach
@@ -115,43 +130,9 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let threads = document.querySelectorAll("[id^='star-rating-']");
-
-        threads.forEach(thread => {
-            let threadId = thread.id.split('-')[2];
-            let stars = document.querySelectorAll(`#star-rating-${threadId} .star-box`);
-            let ratingValue = document.getElementById(`rating-value-${threadId}`);
-
-            stars.forEach(star => {
-                star.addEventListener('click', function() {
-                    let value = this.getAttribute('data-value');
-                    ratingValue.value = value;
-
-                    stars.forEach(s => s.classList.remove('selected'));
-                    for (let i = 0; i < value; i++) {
-                        stars[i].classList.add('selected');
-                    }
-                });
-            });
-        });
-    });
-
-    function mostrarFormulario(threadId) {
-        let formulario = document.getElementById(`formularioPost_${threadId}`);
-        formulario.style.display = formulario.style.display === "none" ? "block" : "none";
-    }
-
-    function mostrarFormularioEditar(threadId) {
-        document.getElementById(`edit-form-${threadId}`).style.display = "block";
-    }
-</script>
-
-
-<!-- Estilos y Script -->
+<!-- Estilos para las estrellas -->
 <style>
-    #star-rating {
+    .star {
         font-size: 30px;
         cursor: pointer;
         color: gray;
@@ -161,30 +142,44 @@
     }
 </style>
 
+<!-- Scripts para valoración, creación de posts y edición -->
 <script>
+    // Asignar event listeners para la valoración de hilos
     document.addEventListener('DOMContentLoaded', function() {
-        let stars = document.querySelectorAll('.star');
-        let ratingValue = document.getElementById('rating-value');
-
-        stars.forEach(star => {
-            star.addEventListener('click', function() {
-                let value = this.getAttribute('data-value');
-                ratingValue.value = value;
-
-                // Resaltar las estrellas seleccionadas
-                stars.forEach(s => s.classList.remove('selected'));
-                for (let i = 0; i < value; i++) {
-                    stars[i].classList.add('selected');
-                }
+        document.querySelectorAll('[id^="star-rating-"]').forEach(function(ratingContainer) {
+            let threadId = ratingContainer.id.split('-')[2];
+            let stars = ratingContainer.querySelectorAll('.star');
+            let ratingInput = document.getElementById('rating-value-' + threadId);
+            stars.forEach(function(star) {
+                star.addEventListener('click', function() {
+                    let value = this.getAttribute('data-value');
+                    ratingInput.value = value;
+                    stars.forEach(function(s) { s.classList.remove('selected'); });
+                    stars.forEach(function(s, index) {
+                        if(index < value){ s.classList.add('selected'); }
+                    });
+                });
             });
         });
     });
 
-    function toggleEditForm(commentId) {
-        let form = document.getElementById(`edit-form-${commentId}`);
-        form.style.display = form.style.display === "none" ? "block" : "none";
+    // Función para mostrar/ocultar el formulario de
+    // creación de posts
+    function mostrarFormulario(threadId) {
+        let formulario = document.getElementById(`formularioPost_${threadId}`);
+        formulario.style.display = (formulario.style.display === 'none' || formulario.style.display === '') ? 'block' : 'none';
+    }
+
+    // Función para mostrar/ocultar el formulario de edición de hilos
+    function mostrarFormularioEditar(threadId) {
+        let form = document.getElementById(`edit-form-${threadId}`);
+        form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+    }
+
+    // Función para mostrar/ocultar el formulario de edición de posts
+    function toggleEditPostForm(postId) {
+        let form = document.getElementById(`edit-post-form-${postId}`);
+        form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
     }
 </script>
-
-
 @endsection

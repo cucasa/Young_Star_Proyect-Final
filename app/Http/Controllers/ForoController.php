@@ -60,7 +60,7 @@ public function destroy($id)
     }
 
     $forum->delete();
-    return redirect()->route('foros_index')->with('success', 'Foro eliminado correctamente.');
+    return redirect()->route('perfil')->with('success', 'Foro eliminado correctamente.');
 }
 
 

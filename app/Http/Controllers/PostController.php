@@ -24,6 +24,38 @@ class PostController extends Controller
         return redirect()->back()->with('success', 'Post creado correctamente.');
     }
 
+public function update(Request $request, Post $post)
+    {
+        // Verificamos que el usuario autenticado es el creador del post
+        if (Auth::id() !== $post->user_id) {
+            return redirect()->back()->with('error', 'No tienes permiso para editar este post.');
+        }
+
+        // Validar la entrada
+        $request->validate([
+            'body' => 'required|string'
+        ]);
+
+        // Actualizar el contenido del post y guardar
+        $post->body = $request->body;
+        $post->save();
+
+        return redirect()->back()->with('success', 'Post actualizado correctamente.');
+    }
+
+public function destroy(Post $post)
+    {
+        // Verificar que el usuario autenticado es el creador del post
+        if (Auth::id() !== $post->user_id) {
+            return redirect()->back()->with('error', 'No tienes permiso para eliminar este post.');
+        }
+
+        $post->delete();
+
+        return redirect()->back()->with('success', 'Post eliminado correctamente.');
+    }
+
+
 }
 
 

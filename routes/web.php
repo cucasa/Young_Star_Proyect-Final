@@ -71,6 +71,9 @@ Route::delete('/hilos/{id}', [ThreadController::class, 'destroy'])->name('hilos_
 
 // 📌 Post
 Route::post('/posts/guardar', [PostController::class, 'guardarPost'])->name('guardar_post');
+Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts_editar');
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts_eliminar');
+
 
 
 
