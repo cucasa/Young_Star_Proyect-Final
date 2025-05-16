@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    protected $fillable = ['name'];
+    // Usa el nombre de columna correcto
+    protected $fillable = ['nombre'];
 
-    // Un rol puede tener muchos usuarios
+    // Relación: un rol puede tener muchos usuarios
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class, 'roles_id');
     }
 }
- 

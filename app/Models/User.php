@@ -31,13 +31,14 @@ class User extends Authenticatable
         ];
     }
 
-   
+
 
     // ✅ Relaciones personalizadas
     public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
+{
+    return $this->belongsTo(Role::class, 'roles_id');
+}
+
 
     public function articles()
     {

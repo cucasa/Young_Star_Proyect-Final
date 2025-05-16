@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Load;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +14,9 @@ class PerfilController extends Controller
     {
         return view('perfil', ['user' => Auth::user()]);
     }
+
+
+
 
     // ✅ Cerrar sesión del usuario
     public function cerrarSesion(Request $request)

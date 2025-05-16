@@ -1,98 +1,52 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- HEADER / HERO -->
+<header class="hero position-relative text-white">
+  <!-- Fondo degradado con overlay -->
+  <div class="hero-bg position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, #141E30, #243B55); z-index: 1;"></div>
 
+  <div class="container position-relative text-center py-5" style="z-index: 2;">
+    <img src="{{ asset('Assets/logo2.png') }}" alt="Young Star Logo" class="img-fluid mb-4" style="max-width: 300px;">
+    <h1 class="display-2 fw-bold">Young Star</h1>
+    <p class="lead">Donde las ideas y la creatividad se unen para transformar el futuro.</p>
+  </div>
+</header>
 
-
-
-
-<!-- Sección de encabezado mejorada -->
-
-<div class="card bg-dark text-white border-0">
-    <img src="{{ asset('Assets/logo3.png') }}" class="card-img opacity-25" alt="Fondo YoungStar">
-    <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center text-center">
-        <img src="{{ asset('Assets/logo2.png') }}" alt="Logo YoungStar" class="img-fluid mb-3" style="max-width: 400px; width: 100%;">
-        <h1 class="card-title display-3 fw-bold">Young Star</h1>
-    </div>
-</div>
-
-
-
-
-
-      <div class="container py-5">
-          <!-- Sección de bienvenida -->
-          <div class="text-center mb-5">
-              <h1 class="fw-bold">Bienvenido a Young Star</h1>
-              <p class="lead">La plataforma donde puedes explorar, aprender y compartir tus ideas.</p>
+<!-- MAIN CONTENT -->
+<main>
+  <!-- Sección de Bienvenida y Características -->
+  <section id="features" class="py-5">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h1 class="fw-bold">Bienvenido a Young Star</h1>
+        <p class="lead">La plataforma donde puedes explorar, aprender y compartir tus ideas.</p>
+      </div>
+      <div class="row text-center">
+        <div class="col-md-4 mb-4">
+          <div class="p-4 border rounded shadow-sm">
+            <i class="fas fa-comments fa-3x text-primary mb-3"></i>
+            <h4 class="fw-bold">Foros</h4>
+            <p>Conecta, debate y comparte en comunidades activas.</p>
           </div>
-
-          <!-- Sección de características -->
-          <div class="row text-center mb-5">
-              <div class="col-md-4">
-                  <i class="fas fa-comments fa-3x text-primary mb-3"></i>
-                  <h4 class="fw-bold">Foros</h4>
-                  <p>Únete a discusiones interesantes y comparte tus ideas con la comunidad.</p>
-              </div>
-              <div class="col-md-4">
-                  <i class="fas fa-book fa-3x text-primary mb-3"></i>
-                  <h4 class="fw-bold">Artículos</h4>
-                  <p>Lee artículos educativos y descubre contenido valioso creado por expertos.</p>
-              </div>
-              <div class="col-md-4">
-                  <i class="fas fa-tools fa-3x text-primary mb-3"></i>
-                  <h4 class="fw-bold">Recursos</h4>
-                  <p>Accede a herramientas y recursos que te ayudarán a alcanzar tus metas.</p>
-              </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="p-4 border rounded shadow-sm">
+            <i class="fas fa-book fa-3x text-primary mb-3"></i>
+            <h4 class="fw-bold">Artículos</h4>
+            <p>Descubre contenido curado y aprende de expertos en cada tema.</p>
           </div>
-
-
-
-
-<!-- Sección de noticias -->
-<div class="container py-5">
-    <h2 class="fw-bold text-center mb-5">Últimas Noticias</h2>
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-        <div class="col">
-            <div class="card">
-                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Noticia 1">
-                <div class="card-body">
-                    <h5 class="card-title">Título de la Noticia 1</h5>
-                    <p class="card-text">Esta es una breve descripción de la noticia para captar la atención del lector.</p>
-                </div>
-            </div>
         </div>
-        <div class="col">
-            <div class="card">
-                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Noticia 2">
-                <div class="card-body">
-                    <h5 class="card-title">Título de la Noticia 2</h5>
-                    <p class="card-text">Otra descripción breve para destacar el contenido de esta noticia.</p>
-                </div>
-            </div>
+        <div class="col-md-4 mb-4">
+          <div class="p-4 border rounded shadow-sm">
+            <i class="fas fa-tools fa-3x text-primary mb-3"></i>
+            <h4 class="fw-bold">Recursos</h4>
+            <p>Encuentra herramientas y materiales para crecer profesionalmente.</p>
+          </div>
         </div>
-        <div class="col">
-            <div class="card">
-                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Noticia 3">
-                <div class="card-body">
-                    <h5 class="card-title">Título de la Noticia 3</h5>
-                    <p class="card-text">Descripción breve que invita al lector a explorar más sobre esta noticia.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Noticia 4">
-                <div class="card-body">
-                    <h5 class="card-title">Título de la Noticia 4</h5>
-                    <p class="card-text">Esta es una breve descripción adicional para completar la sección de noticias.</p>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-</div>
+  </section>
+
 
 @endsection
-
-
-

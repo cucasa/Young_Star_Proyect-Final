@@ -20,4 +20,16 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
     }
+
+    public function runl()
+    {
+    $this->call([
+        RoleSeeder::class,
+        // Otros seeders, por ejemplo, UserSeeder::class,
+    ]);
+    }
+
+
+
+
 }

@@ -11,6 +11,9 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RatingController;
 use Faker\ORM\Propel2\EntityPopulator;
+use App\Http\Controllers\HerramientasController;
+use App\Http\Controllers\MaterialEducativoController;
+use App\Http\Controllers\GuíasyTutorialesController;
 
 
 
@@ -97,3 +100,13 @@ Route::put('/comentario/{id}', [CommentController::class, 'update'])->name('come
 Route::post('/valoracion', [RatingController::class, 'store'])->name('valoraciones_guardar');
 Route::put('/valoracion/{id}', [RatingController::class, 'update'])->name('valoraciones_editar');
 Route::post('/hilos/{id}/valorar', [RatingController::class, 'storeThreadRating'])->name('hilos_valorar');
+
+
+
+
+
+Route::get('/herramientas', [HerramientasController::class, 'index'])->name('herramientas.index');
+Route::get('/material-educativo', [MaterialEducativoController::class, 'index'])->name('material-educativo.index');
+Route::get('/tutoriales', [GuíasyTutorialesController::class, 'index'])->name('tutoriales.index');
+
+

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Role;
 use Illuminate\Support\Facades\Session;
 
 class Entrada extends Controller
@@ -43,22 +44,32 @@ class Entrada extends Controller
     {
         return view('registro');
     }
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-        ]);
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
 
-        return to_route('entrada')->with('success', 'Usuario registrado exitosamente.');
-    }
+
+
+
+public function store(Request $request)
+{
+    $request->validate([
+        'name'     => 'required|string|max:255',
+        'email'    => 'required|email|unique:users,email',
+        'password' => 'required|string|min:6',
+    ]);
+
+    // Buscamos el rol "usuario"
+    $roleUsuario = Role::where('nombre', 'usuario')->first();
+
+    \App\Models\User::create([
+        'name'     => $request->name,
+        'email'    => $request->email,
+        'password' => Hash::make($request->password),
+        'roles_id' => $roleUsuario ? $roleUsuario->id : null,
+    ]);
+
+    return to_route('entrada')->with('success', 'Usuario registrado exitosamente.');
+}
+
 
 
 
